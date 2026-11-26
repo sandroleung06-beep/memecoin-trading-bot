@@ -1,15 +1,9 @@
+import { toConfigError } from "./errors.js";
 import { envSchema, type AppConfig } from "./schema.js";
 
+export { ConfigError } from "./errors.js";
+export { parseFilterConfig, type FilterConfig } from "./filters.js";
 export type { AppConfig } from "./schema.js";
-
-export class ConfigError extends Error {
-  override readonly name = "ConfigError";
-  readonly issues: readonly string[];
-  constructor(issues: readonly string[]) {
-    super(`Invalid configuration:\n${issues.map((i) => `  - ${i}`).join("\n")}`);
-    this.issues = issues;
-  }
-}
 
 /** Keys whose values must never appear in logs or error messages. */
 const SECRET_KEYS = new Set(["WALLET_PRIVATE_KEY", "LLM_API_KEY", "SOLANA_RPC_URL"]);
@@ -20,14 +14,7 @@ const SECRET_KEYS = new Set(["WALLET_PRIVATE_KEY", "LLM_API_KEY", "SOLANA_RPC_UR
  */
 export function parseConfig(env: Record<string, string | undefined>): AppConfig {
   const result = envSchema.safeParse(env);
-  if (!result.success) {
-    const issues = result.error.issues.map((issue) => {
-      const key = issue.path.join(".") || "(root)";
-      const message = SECRET_KEYS.has(key) && issue.code !== "custom" ? "missing or invalid" : issue.message;
-      return `${key}: ${message}`;
-    });
-    throw new ConfigError(issues);
-  }
+  if (!result.success) throw toConfigError(result.error, SECRET_KEYS);
   return Object.freeze(result.data);
 }
 
