@@ -3,6 +3,7 @@ import { envSchema, type AppConfig } from "./schema.js";
 
 export { ConfigError } from "./errors.js";
 export { parseFilterConfig, type FilterConfig } from "./filters.js";
+export { parseRiskConfig, type RiskConfig } from "./risk.js";
 export type { AppConfig } from "./schema.js";
 
 /** Keys whose values must never appear in logs or error messages. */

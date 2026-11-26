@@ -10,6 +10,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "start": "node dist/index.js",
+    "risk:reset": "node dist/risk/resetCli.js",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest"
