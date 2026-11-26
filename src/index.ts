@@ -1,7 +1,8 @@
-import { ConfigError, loadConfig } from "./config/index.js";
+import { ConfigError, loadConfig, parseFilterConfig } from "./config/index.js";
 
 async function main(): Promise<void> {
   const config = await loadConfig();
+  parseFilterConfig(process.env); // fail fast on bad filter thresholds too
   console.log(`Starting in ${config.EXECUTION_MODE} mode`);
 }
 
