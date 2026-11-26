@@ -12,7 +12,7 @@ export class ConfigError extends Error {
 }
 
 /** Keys whose values must never appear in logs or error messages. */
-const SECRET_KEYS = new Set(["WALLET_PRIVATE_KEY", "LLM_API_KEY", "SOLANA_RPC_URL"]);
+const SECRET_KEYS = new Set(["WALLET_PRIVATE_KEY", "LLM_API_KEY", "XAI_API_KEY", "SOLANA_RPC_URL"]);
 
 /**
  * Pure: validates the given env record and returns a frozen config, or throws ConfigError.
